@@ -55,30 +55,30 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased flex flex-col">
       {/* 1. Header Minimalista e Discreto */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-slate-200">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <header className="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-sm border-b border-slate-800/80 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           {/* Logo Tipográfico Puro */}
           <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-black tracking-tight text-slate-950">
+            <span className="text-xl font-black tracking-tight text-white">
               HEELCLOTH
             </span>
           </Link>
 
           {/* Navegação Principal */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
-            <a href="#como-funciona" className="hover:text-slate-950 transition-colors">
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+            <a href="#como-funciona" className="hover:text-white transition-colors">
               Como Funciona
             </a>
-            <a href="#modalidades" className="hover:text-slate-950 transition-colors">
+            <a href="#modalidades" className="hover:text-white transition-colors">
               Modalidades
             </a>
-            <a href="#materiais" className="hover:text-slate-950 transition-colors">
+            <a href="#materiais" className="hover:text-white transition-colors">
               Materiais
             </a>
-            <a href="#tabela-medidas" className="hover:text-slate-950 transition-colors">
+            <a href="#tabela-medidas" className="hover:text-white transition-colors">
               Tabela de Medidas
             </a>
-            <Link href="/ajuda" className="hover:text-slate-950 transition-colors">
+            <Link href="/ajuda" className="hover:text-white transition-colors">
               Ajuda
             </Link>
           </nav>
@@ -87,13 +87,13 @@ export default function HomePage() {
           <div className="hidden md:flex items-center gap-4">
             <Link
               href="/rastreio"
-              className="text-xs font-medium text-slate-600 hover:text-slate-950 transition-colors"
+              className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
             >
               Já tenho um código
             </Link>
             <Link
               href="/pedido"
-              className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold transition shadow-xs"
+              className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-xs"
             >
               Fazer Pedido
             </Link>
@@ -102,7 +102,7 @@ export default function HomePage() {
           {/* Menu Mobile */}
           <button
             onClick={() => setMenuAberto(!menuAberto)}
-            className="md:hidden p-2 text-slate-700 hover:text-slate-950"
+            className="md:hidden p-2 text-slate-300 hover:text-white"
             aria-label="Abrir menu"
           >
             {menuAberto ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -111,46 +111,46 @@ export default function HomePage() {
 
         {/* Gaveta Mobile */}
         {menuAberto && (
-          <div className="md:hidden border-b border-slate-200 bg-white px-4 py-4 space-y-3">
+          <div className="md:hidden border-b border-slate-800 bg-slate-950 px-4 py-4 space-y-3">
             <a
               href="#como-funciona"
               onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-700"
+              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
             >
               Como Funciona
             </a>
             <a
               href="#modalidades"
               onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-700"
+              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
             >
               Modalidades
             </a>
             <a
               href="#materiais"
               onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-700"
+              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
             >
               Materiais
             </a>
             <a
               href="#tabela-medidas"
               onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-700"
+              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
             >
               Tabela de Medidas
             </a>
             <Link
               href="/ajuda"
               onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-700"
+              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
             >
               Ajuda & Dúvidas
             </Link>
             <Link
               href="/rastreio"
               onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-700"
+              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
             >
               Acompanhar Pedido
             </Link>
@@ -167,92 +167,70 @@ export default function HomePage() {
         )}
       </header>
 
-      {/* 2. Hero Section Refinado */}
-      <section className="pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-slate-200/80 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
-            {/* Coluna Esquerda: Texto e Ações */}
-            <div className="lg:col-span-7 space-y-6">
+      {/* 2. Hero Section: Atmosfera Fotográfica Premium em Fundo Escuro com Destaque para o Tecido */}
+      <section className="relative overflow-hidden bg-[#07090d] text-white border-b border-slate-800">
+        {/* Feixe de Luz Direcional Dramático (Inspirado na Referência) */}
+        <div className="pointer-events-none absolute -top-40 -left-20 w-[650px] h-[800px] bg-gradient-to-br from-amber-500/12 via-blue-500/5 to-transparent blur-3xl transform -rotate-12" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 lg:py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {/* Coluna Esquerda: [CONTEÚDO] */}
+            <div className="lg:col-span-6 space-y-6 z-10 text-center lg:text-left">
               <div className="space-y-4">
-                <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-                  Confecção de Uniformes Esportivos
+                <p className="text-xs font-semibold tracking-widest uppercase text-amber-400/90">
+                  Uniformes de Alta Performance
                 </p>
-                <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-950 leading-[1.15]">
-                  Camisas e uniformes personalizados feitos para o seu time.
+
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12]">
+                  Camisas e uniformes <br className="hidden sm:inline" />
+                  personalizados feitos <br className="hidden sm:inline" />
+                  para o seu time.
                 </h1>
-                <p className="text-base sm:text-lg text-slate-600 font-normal leading-relaxed max-w-xl">
-                  Crie seu pedido de forma rápida, informe a lista de jogadores com nome, número e tamanho, e receba seu orçamento sob medida.
+
+                <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
+                  Crie seu pedido de forma rápida, informe os jogadores e receba seu orçamento.
                 </p>
               </div>
 
-              {/* Botões de Conversão */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+              {/* Botões de Ação */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3.5 pt-2">
                 <Link
                   href="/pedido"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-xs transition"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-600/25 transition active:scale-[0.98]"
                 >
-                  <span>Fazer meu pedido</span>
+                  <span>FAZER MEU PEDIDO</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
                 <Link
                   href="/rastreio"
-                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-300 transition"
+                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm border border-slate-700/80 transition active:scale-[0.98]"
                 >
-                  Já fiz um pedido
+                  JÁ FIZ UM PEDIDO
                 </Link>
               </div>
 
-              {/* Linha Institucional Sóbria (Sem ícones decorativos ou checklists de IA) */}
-              <div className="pt-4 border-t border-slate-100">
-                <p className="text-xs text-slate-500 font-medium">
-                  Confecção própria · Sublimação digital de alta definição · Envio para todo o Brasil
+              {/* Linha Institucional Sóbria */}
+              <div className="pt-4 border-t border-slate-800/80">
+                <p className="text-xs text-slate-400 font-medium">
+                  Confecção própria · Sublimação digital HD · Envio para todo o Brasil
                 </p>
               </div>
             </div>
 
-            {/* Coluna Direita: Apresentação Gráfica Limpa do Uniforme */}
-            <div className="lg:col-span-5">
-              <div className="border border-slate-200 rounded-xl bg-slate-50/70 p-6 sm:p-8">
-                {/* Visual da Camisa Esportiva */}
-                <div className="mx-auto w-48 sm:w-56 h-64 bg-slate-900 rounded-lg shadow-xs flex flex-col justify-between p-5 text-white relative overflow-hidden">
-                  {/* Recorte Visual do Uniforme */}
-                  <div className="absolute top-0 inset-x-0 h-2 bg-blue-600" />
-                  <div className="flex items-center justify-between text-[11px] font-semibold text-slate-400">
-                    <span>HEELCLOTH</span>
-                    <span>DRY-FIT</span>
-                  </div>
+            {/* Coluna Direita: [CAMISA] - Elemento Visual Principal sem Cards ou Mockups de Dashboard */}
+            <div className="lg:col-span-6 flex items-center justify-center relative">
+              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-none flex items-center justify-center">
+                {/* Sutil halo atmosférico atrás da peça */}
+                <div className="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent blur-3xl pointer-events-none" />
 
-                  <div className="text-center my-auto space-y-1">
-                    <span className="block text-4xl sm:text-5xl font-black tracking-tight text-white font-mono">
-                      10
-                    </span>
-                    <span className="block text-xs font-bold tracking-widest uppercase text-slate-200">
-                      SILVA
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-[11px] text-slate-400 border-t border-slate-800 pt-2 font-mono">
-                    <span>TAM: G</span>
-                    <span>OFICIAL</span>
-                  </div>
-                </div>
-
-                {/* Especificação do Produto */}
-                <div className="mt-6 pt-5 border-t border-slate-200 space-y-2 text-xs">
-                  <div className="flex justify-between text-slate-600">
-                    <span>Modelo</span>
-                    <span className="font-semibold text-slate-900">Camisa de Jogo Gola V</span>
-                  </div>
-                  <div className="flex justify-between text-slate-600">
-                    <span>Tecido</span>
-                    <span className="font-semibold text-slate-900">Dry-Fit 100% Poliéster</span>
-                  </div>
-                  <div className="flex justify-between text-slate-600">
-                    <span>Personalização</span>
-                    <span className="font-semibold text-slate-900">Nome e número individual</span>
-                  </div>
-                </div>
+                {/* Fotografia da Camisa em Iluminação Dramática */}
+                <img
+                  src="/images/hero-jersey-dark.jpg"
+                  alt="Camisa Oficial Heelcloth Sportswear"
+                  className="relative z-10 w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)]"
+                  loading="eager"
+                />
               </div>
             </div>
           </div>
