@@ -14,6 +14,6 @@ Task 1: complete (8a169f4)
 Task 2: complete (a30cff7)
 Task 3: complete (011a3e9)
 Task 4: complete (011a3e9)
-Task 5: complete
-Task 6: in_progress
-Task 7: pending
+Task 5: complete (4ca6bb5)
+Task 6: complete
+Task 7: in_progress
