@@ -15,7 +15,7 @@ export default function RastreioPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-slate-900 flex items-center justify-center text-slate-400 text-xs">
+        <div className="min-h-screen bg-white flex items-center justify-center text-slate-500 text-xs font-mono">
           Carregando rastreamento...
         </div>
       }
