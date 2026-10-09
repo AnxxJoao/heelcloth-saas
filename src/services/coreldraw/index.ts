@@ -157,7 +157,64 @@ export class CorelDrawService {
       })),
     };
   }
+
+  criarJobSnapshot = gerarJobSnapshot;
+}
+
+export function gerarJobSnapshot(
+  order: {
+    id: string;
+    orderNumber: string;
+    customer?: { name?: string | null } | null;
+    players: Array<{
+      id: string;
+      playerIndex: number;
+      name: string;
+      number: string;
+      size: string;
+      model: string;
+      notes?: string | null;
+      shortSize?: string | null;
+      options?: string | null;
+    }>;
+  },
+  options?: {
+    templateKey?: string;
+    templatePath?: string;
+    rootPath?: string;
+    formats?: Array<"cdr" | "pdf" | "eps" | "plt">;
+    dryRun?: boolean;
+    attempt?: number;
+  }
+) {
+  return {
+    jobId: `job_${order.orderNumber.replace(/[^A-Za-z0-9]/g, "_")}_${Date.now()}`,
+    attempt: options?.attempt || 1,
+    orderId: order.id,
+    orderNumber: order.orderNumber,
+    customerName: order.customer?.name || "Cliente",
+    templateKey: options?.templateKey || "gabarito_camisa_padrao",
+    templatePath: options?.templatePath || "C:\\Heelcloth\\Templates\\gabarito_camisa_padrao.cdr",
+    dryRun: !!options?.dryRun,
+    output: {
+      rootPath: options?.rootPath || "C:\\Heelcloth\\Outputs",
+      formats: options?.formats || ["cdr", "pdf"],
+    },
+    players: order.players.map((p) => ({
+      lineId: p.id,
+      playerIndex: p.playerIndex,
+      name: p.name.trim().toUpperCase(),
+      number: p.number.trim(),
+      size: p.size.trim().toUpperCase(),
+      model: p.model.trim().toUpperCase(),
+      notes: p.notes ? p.notes.trim() : null,
+      shortSize: p.shortSize ? p.shortSize.trim().toUpperCase() : null,
+      options: p.options || null,
+    })),
+    createdAt: new Date().toISOString(),
+  };
 }
 
 export const corelDrawService = new CorelDrawService();
 export * from "./types";
+export * from "./job-contract";
