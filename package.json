@@ -10,7 +10,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev"
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:seed": "prisma db seed"
   },
   "dependencies": {
     "@netlify/blobs": "^8.1.0",
@@ -31,6 +32,10 @@
     "postcss": "^8.5.3",
     "prisma": "^6.4.1",
     "tailwindcss": "^4.0.9",
+    "tsx": "^4.23.15",
     "typescript": "^5.8.2"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }
