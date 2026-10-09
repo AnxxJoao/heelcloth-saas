@@ -2,592 +2,244 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  Shirt,
-  Search,
-  ArrowRight,
-  Menu,
-  X,
-  Lock,
-  ChevronRight,
-  Ruler,
-} from "lucide-react";
+import { ArrowUpRight, Menu, X, Sparkles } from "lucide-react";
+import { EditorialSlideshow } from "@/components/EditorialSlideshow";
 
 export default function HomePage() {
-  const router = useRouter();
-  const [menuAberto, setMenuAberto] = useState(false);
-  const [codigoRastreio, setCodigoRastreio] = useState("");
-  const [abaMedidas, setAbaMedidas] = useState<"masculino" | "feminino" | "infantil">("masculino");
-
-  const handleBuscarRastreio = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (codigoRastreio.trim()) {
-      router.push(`/rastreio?codigo=${encodeURIComponent(codigoRastreio.trim())}`);
-    } else {
-      router.push("/rastreio");
-    }
-  };
-
-  const medidas = {
-    masculino: [
-      { tamanho: "P", largura: "50 cm", altura: "68 cm", indicacao: "Até 1,70m e 68kg" },
-      { tamanho: "M", largura: "52 cm", altura: "71 cm", indicacao: "Até 1,78m e 78kg" },
-      { tamanho: "G", largura: "55 cm", altura: "74 cm", indicacao: "Até 1,85m e 88kg" },
-      { tamanho: "GG", largura: "58 cm", altura: "77 cm", indicacao: "Até 1,92m e 100kg" },
-      { tamanho: "XGG", largura: "62 cm", altura: "80 cm", indicacao: "Acima de 100kg" },
-    ],
-    feminino: [
-      { tamanho: "P", largura: "43 cm", altura: "60 cm", indicacao: "Manequim 36-38" },
-      { tamanho: "M", largura: "46 cm", altura: "63 cm", indicacao: "Manequim 40" },
-      { tamanho: "G", largura: "49 cm", altura: "66 cm", indicacao: "Manequim 42-44" },
-      { tamanho: "GG", largura: "52 cm", altura: "69 cm", indicacao: "Manequim 46" },
-    ],
-    infantil: [
-      { tamanho: "06", largura: "36 cm", altura: "48 cm", indicacao: "5 a 6 anos" },
-      { tamanho: "08", largura: "39 cm", altura: "52 cm", indicacao: "7 a 8 anos" },
-      { tamanho: "10", largura: "42 cm", altura: "56 cm", indicacao: "9 a 10 anos" },
-      { tamanho: "12", largura: "44 cm", altura: "60 cm", indicacao: "11 a 12 anos" },
-      { tamanho: "14", largura: "46 cm", altura: "64 cm", indicacao: "13 a 14 anos" },
-    ],
-  };
+  const [menuMobileAberto, setMenuMobileAberto] = useState(false);
+  const [navAtiva, setNavAtiva] = useState<"colecao" | "novidades" | "editorial" | "sobre">("colecao");
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 font-sans antialiased flex flex-col">
-      {/* 1. Header Minimalista e Discreto */}
-      <header className="sticky top-0 z-40 bg-slate-950/95 backdrop-blur-sm border-b border-slate-800/80 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Logo Tipográfico Puro */}
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-black tracking-tight text-white">
+    <div className="min-h-screen bg-[#49AAB8] p-3 sm:p-5 lg:p-6 flex flex-col items-center justify-start font-editorial selection:bg-[#49AAB8] selection:text-white">
+      {/* Grande Canvas Editorial Branco Central */}
+      <div className="w-full max-w-[1540px] bg-[#FCFCFB] text-[#121212] rounded-sm sm:rounded-md shadow-xs flex flex-col min-h-[calc(100vh-24px)] sm:min-h-[calc(100vh-40px)] relative overflow-hidden">
+        
+        {/* ==================================================================== */}
+        {/* HEADER CONTIDO NO TOPO DO CANVAS */}
+        {/* ==================================================================== */}
+        <header className="w-full px-5 sm:px-8 lg:px-12 py-5 sm:py-6 flex items-center justify-between border-b border-black/[0.06] bg-[#FCFCFB]/90 backdrop-blur-xs sticky top-0 z-30">
+          {/* Logo da Marca (Tipografia Editorial Original) */}
+          <Link
+            href="/"
+            className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] rounded-xs"
+          >
+            <span className="text-lg sm:text-xl font-bold tracking-tight text-[#121212] transition-opacity group-hover:opacity-80">
               HEELCLOTH
             </span>
           </Link>
 
-          {/* Navegação Principal */}
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-            <a href="#como-funciona" className="hover:text-white transition-colors">
-              Como Funciona
-            </a>
-            <a href="#modalidades" className="hover:text-white transition-colors">
-              Modalidades
-            </a>
-            <a href="#materiais" className="hover:text-white transition-colors">
-              Materiais
-            </a>
-            <a href="#tabela-medidas" className="hover:text-white transition-colors">
-              Tabela de Medidas
-            </a>
-            <Link href="/ajuda" className="hover:text-white transition-colors">
-              Ajuda
-            </Link>
+          {/* Navegação Desktop: Recipiente Preto em Formato Cápsula */}
+          <nav
+            aria-label="Navegação principal"
+            className="hidden md:flex items-center bg-[#121212] text-white rounded-full p-1 shadow-xs"
+          >
+            <button
+              type="button"
+              onClick={() => setNavAtiva("colecao")}
+              className={`px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] ${
+                navAtiva === "colecao"
+                  ? "bg-[#49AAB8] text-white shadow-2xs"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              Coleção
+            </button>
+            <button
+              type="button"
+              onClick={() => setNavAtiva("novidades")}
+              className={`px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] ${
+                navAtiva === "novidades"
+                  ? "bg-[#49AAB8] text-white shadow-2xs"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              Novidades
+            </button>
+            <button
+              type="button"
+              onClick={() => setNavAtiva("editorial")}
+              className={`px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] ${
+                navAtiva === "editorial"
+                  ? "bg-[#49AAB8] text-white shadow-2xs"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              Editorial
+            </button>
+            <button
+              type="button"
+              onClick={() => setNavAtiva("sobre")}
+              className={`px-3.5 py-1.5 rounded-full text-xs sm:text-[13px] font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] ${
+                navAtiva === "sobre"
+                  ? "bg-[#49AAB8] text-white shadow-2xs"
+                  : "text-white/70 hover:text-white"
+              }`}
+            >
+              Sobre
+            </button>
           </nav>
 
-          {/* Ações Diretas */}
-          <div className="hidden md:flex items-center gap-4">
+          {/* Ações à Direita */}
+          <div className="hidden sm:flex items-center gap-2.5">
             <Link
-              href="/rastreio"
-              className="text-xs font-medium text-slate-400 hover:text-white transition-colors"
+              href="/login"
+              className="inline-flex items-center justify-center h-9 px-4 rounded-full border border-black/15 bg-white text-xs sm:text-[13px] font-medium text-[#121212] hover:bg-black/5 active:scale-[0.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8]"
             >
-              Já tenho um código
+              Entrar
             </Link>
             <Link
-              href="/pedido"
-              className="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition shadow-xs"
+              href="/login"
+              className="inline-flex items-center justify-center h-9 px-4 rounded-full bg-[#121212] text-xs sm:text-[13px] font-medium text-white hover:bg-black/85 active:scale-[0.98] transition focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8]"
             >
-              Fazer Pedido
+              Criar conta
             </Link>
           </div>
 
-          {/* Menu Mobile */}
+          {/* Botão Mobile Hambúrguer */}
           <button
-            onClick={() => setMenuAberto(!menuAberto)}
-            className="md:hidden p-2 text-slate-300 hover:text-white"
-            aria-label="Abrir menu"
+            type="button"
+            onClick={() => setMenuMobileAberto(!menuMobileAberto)}
+            aria-expanded={menuMobileAberto}
+            aria-label="Abrir menu de navegação"
+            className="md:hidden p-2 rounded-full border border-black/10 text-[#121212] hover:bg-black/5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8]"
           >
-            {menuAberto ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {menuMobileAberto ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
-        </div>
+        </header>
 
-        {/* Gaveta Mobile */}
-        {menuAberto && (
-          <div className="md:hidden border-b border-slate-800 bg-slate-950 px-4 py-4 space-y-3">
-            <a
-              href="#como-funciona"
-              onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
-            >
-              Como Funciona
-            </a>
-            <a
-              href="#modalidades"
-              onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
-            >
-              Modalidades
-            </a>
-            <a
-              href="#materiais"
-              onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
-            >
-              Materiais
-            </a>
-            <a
-              href="#tabela-medidas"
-              onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
-            >
-              Tabela de Medidas
-            </a>
-            <Link
-              href="/ajuda"
-              onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
-            >
-              Ajuda & Dúvidas
-            </Link>
-            <Link
-              href="/rastreio"
-              onClick={() => setMenuAberto(false)}
-              className="block py-1.5 text-sm font-medium text-slate-300 hover:text-white"
-            >
-              Acompanhar Pedido
-            </Link>
-            <div className="pt-2">
-              <Link
-                href="/pedido"
-                onClick={() => setMenuAberto(false)}
-                className="block w-full text-center py-2.5 rounded-lg bg-blue-600 text-white text-sm font-bold shadow-xs"
+        {/* Menu Mobile Retrátil e Acessível */}
+        {menuMobileAberto && (
+          <div className="md:hidden bg-[#FCFCFB] border-b border-black/10 px-6 py-5 flex flex-col gap-4 animate-in fade-in slide-in-from-top-2 duration-200">
+            <nav className="flex flex-col gap-2 text-sm font-medium text-[#121212]">
+              <button
+                type="button"
+                onClick={() => {
+                  setNavAtiva("colecao");
+                  setMenuMobileAberto(false);
+                }}
+                className="text-left py-2 px-3 rounded-lg hover:bg-black/5"
               >
-                Fazer Pedido
+                Coleção
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setNavAtiva("novidades");
+                  setMenuMobileAberto(false);
+                }}
+                className="text-left py-2 px-3 rounded-lg hover:bg-black/5"
+              >
+                Novidades
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setNavAtiva("editorial");
+                  setMenuMobileAberto(false);
+                }}
+                className="text-left py-2 px-3 rounded-lg hover:bg-black/5"
+              >
+                Editorial
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setNavAtiva("sobre");
+                  setMenuMobileAberto(false);
+                }}
+                className="text-left py-2 px-3 rounded-lg hover:bg-black/5"
+              >
+                Sobre
+              </button>
+            </nav>
+            <div className="pt-3 border-t border-black/10 flex items-center gap-2">
+              <Link
+                href="/login"
+                className="flex-1 text-center py-2 rounded-full border border-black/20 text-xs font-semibold text-[#121212]"
+              >
+                Entrar
+              </Link>
+              <Link
+                href="/login"
+                className="flex-1 text-center py-2 rounded-full bg-[#121212] text-xs font-semibold text-white"
+              >
+                Criar conta
               </Link>
             </div>
           </div>
         )}
-      </header>
 
-      {/* 2. Hero Section: Atmosfera Fotográfica Premium em Fundo Escuro com Destaque para o Tecido */}
-      <section className="relative overflow-hidden bg-[#07090d] text-white border-b border-slate-800">
-        {/* Feixe de Luz Direcional Dramático (Inspirado na Referência) */}
-        <div className="pointer-events-none absolute -top-40 -left-20 w-[650px] h-[800px] bg-gradient-to-br from-amber-500/12 via-blue-500/5 to-transparent blur-3xl transform -rotate-12" />
+        {/* ==================================================================== */}
+        {/* HERO SECTION — CENTRALIZADO COM SLIDESHOW EDITORIAL NA BASE */}
+        {/* ==================================================================== */}
+        <main className="flex-1 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-10 sm:pt-14 pb-8 sm:pb-12 max-w-[1440px] w-full mx-auto">
+          
+          {/* Bloco de Título e Chamada Central */}
+          <div className="flex flex-col items-center text-center max-w-3xl mx-auto my-auto py-2 sm:py-6">
+            
+            {/* Headline com Tipografia Sans Forte */}
+            <h1 className="text-3xl sm:text-5xl lg:text-[3.5rem] font-bold tracking-tight text-[#121212] leading-[1.05] max-w-2xl sm:max-w-3xl">
+              Moda que acompanha o seu ritmo.
+            </h1>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12 lg:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-            {/* Coluna Esquerda: [CONTEÚDO] */}
-            <div className="lg:col-span-6 space-y-6 z-10 text-center lg:text-left">
-              <div className="space-y-4">
-                <p className="text-xs font-semibold tracking-widest uppercase text-amber-400/90">
-                  Uniformes de Alta Performance
-                </p>
+            {/* Subheadline Arejada */}
+            <p className="mt-4 sm:mt-5 text-[15px] sm:text-[17px] text-[#606060] max-w-xl leading-relaxed font-normal">
+              Peças autorais para vestir com leveza, presença e liberdade.
+            </p>
 
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12]">
-                  Camisas e uniformes <br className="hidden sm:inline" />
-                  personalizados feitos <br className="hidden sm:inline" />
-                  para o seu time.
-                </h1>
-
-                <p className="text-base sm:text-lg text-slate-300 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0">
-                  Crie seu pedido de forma rápida, informe os jogadores e receba seu orçamento.
-                </p>
-              </div>
-
-              {/* Botões de Ação */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3.5 pt-2">
-                <Link
-                  href="/pedido"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm shadow-lg shadow-blue-600/25 transition active:scale-[0.98]"
-                >
-                  <span>FAZER MEU PEDIDO</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-
-                <Link
-                  href="/rastreio"
-                  className="inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-slate-900/80 hover:bg-slate-800 text-slate-200 hover:text-white font-semibold text-sm border border-slate-700/80 transition active:scale-[0.98]"
-                >
-                  JÁ FIZ UM PEDIDO
-                </Link>
-              </div>
-
-              {/* Linha Institucional Sóbria */}
-              <div className="pt-4 border-t border-slate-800/80">
-                <p className="text-xs text-slate-400 font-medium">
-                  Confecção própria · Sublimação digital HD · Envio para todo o Brasil
-                </p>
-              </div>
-            </div>
-
-            {/* Coluna Direita: [CAMISA] - Elemento Visual Principal sem Cards ou Mockups de Dashboard */}
-            <div className="lg:col-span-6 flex items-center justify-center relative">
-              <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-none flex items-center justify-center">
-                {/* Sutil halo atmosférico atrás da peça */}
-                <div className="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent blur-3xl pointer-events-none" />
-
-                {/* Fotografia da Camisa em Iluminação Dramática */}
-                <img
-                  src="/images/hero-jersey-dark.jpg"
-                  alt="Camisa Oficial Heelcloth Sportswear"
-                  className="relative z-10 w-full max-w-[340px] sm:max-w-[420px] lg:max-w-[480px] h-auto object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.95)]"
-                  loading="eager"
+            {/* CTA Primário em Azul Aqua no Formato Cápsula com Seta SVG */}
+            <div className="mt-6 sm:mt-8 flex items-center justify-center">
+              <a
+                href="#colecao"
+                className="inline-flex items-center justify-center h-11 sm:h-12 px-6 sm:px-7 rounded-full bg-[#49AAB8] hover:bg-[#368D9C] text-white text-sm sm:text-[15px] font-semibold transition-all duration-200 active:scale-[0.98] shadow-2xs group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] focus-visible:ring-offset-2"
+              >
+                <span>Conheça a coleção</span>
+                <ArrowUpRight
+                  className="w-4 h-4 ml-1.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  strokeWidth={2}
                 />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. Modalidades & Aplicações */}
-      <section id="modalidades" className="py-16 sm:py-20 border-b border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mb-12">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1.5">
-              Catálogo de Produtos
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950">
-              Modelagens projetadas para cada modalidade
-            </h2>
-            <p className="text-sm text-slate-600 mt-2">
-              Desenvolvemos uniformes com caimento ergonômico, adequados para treinos, campeonatos e eventos.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="border border-slate-200 rounded-lg p-5 bg-white space-y-2">
-              <h3 className="font-bold text-sm text-slate-950">Futebol & Futsal</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Kits completos com camisa de linha, camisa de goleiro em manga longa e calções com cordão ajustável.
-              </p>
-            </div>
-
-            <div className="border border-slate-200 rounded-lg p-5 bg-white space-y-2">
-              <h3 className="font-bold text-sm text-slate-950">Basquete & Vôlei</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Regatas e shorts leves com aberturas laterais para amplitude de movimento e rápida evaporação de suor.
-              </p>
-            </div>
-
-            <div className="border border-slate-200 rounded-lg p-5 bg-white space-y-2">
-              <h3 className="font-bold text-sm text-slate-950">Atléticas & Torcidas</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Tiragens sob medida com personalização total de escudo, patrocinadores e arte nas costas.
-              </p>
-            </div>
-
-            <div className="border border-slate-200 rounded-lg p-5 bg-white space-y-2">
-              <h3 className="font-bold text-sm text-slate-950">Corridas & Treinos</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Camisas ultraleves com proteção solar UV, indicadas para assessorias esportivas e academias.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Como Funciona (Linha Direta em 3 Etapas) */}
-      <section id="como-funciona" className="py-16 sm:py-20 border-b border-slate-200 bg-slate-50/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mb-12">
-            <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1.5">
-              Etapas do Pedido
-            </p>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950">
-              Como funciona o processo de compra
-            </h2>
-            <p className="text-sm text-slate-600 mt-2">
-              Um fluxo direto para evitar erros de tamanho ou nomes grafados incorretamente.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="space-y-3">
-              <span className="font-mono text-xs font-bold text-blue-600">01</span>
-              <h3 className="font-bold text-base text-slate-900">
-                Escolha o modelo e as peças
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Defina a quantidade de camisas de linha, camisas de goleiro e shorts necessários para a sua equipe.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <span className="font-mono text-xs font-bold text-blue-600">02</span>
-              <h3 className="font-bold text-base text-slate-900">
-                Preencha a lista de jogadores
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Insira o nome, o número e o tamanho de cada atleta diretamente no formulário do pedido.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              <span className="font-mono text-xs font-bold text-blue-600">03</span>
-              <h3 className="font-bold text-base text-slate-900">
-                Acompanhe a confecção
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Com o pedido registrado, utilize seu código para acompanhar o corte, estampa, costura e envio.
-              </p>
+              </a>
             </div>
           </div>
 
-          <div className="mt-10 pt-6 border-t border-slate-200 flex items-center justify-start">
-            <Link
-              href="/pedido"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 hover:underline"
-            >
-              <span>Iniciar preenchimento do meu pedido</span>
-              <ChevronRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. Qualidade & Materiais Técnicos */}
-      <section id="materiais" className="py-16 sm:py-20 border-b border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-            <div className="lg:col-span-6 space-y-4">
-              <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">
-                Qualidade de Produção
-              </p>
-              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950">
-                Tecidos desenvolvidos para resistência e conforto térmico
-              </h2>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                Nossas peças são produzidas com malhas de poliéster de alta densidade e processo de sublimação total, onde a tinta adere diretamente à fibra do tecido sem criar película plástica.
-              </p>
-            </div>
-
-            <div className="lg:col-span-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div className="border border-slate-200 rounded-lg p-4 bg-slate-50/50">
-                <span className="font-bold text-xs text-slate-900 block mb-1">Sublimação Digital</span>
-                <p className="text-xs text-slate-600">
-                  Cores que não desbotam nem descascam após lavagens constantes.
-                </p>
-              </div>
-
-              <div className="border border-slate-200 rounded-lg p-4 bg-slate-50/50">
-                <span className="font-bold text-xs text-slate-900 block mb-1">Tecido Respirável</span>
-                <p className="text-xs text-slate-600">
-                  Estrutura de microfuros que favorece a troca térmica durante os jogos.
-                </p>
-              </div>
-
-              <div className="border border-slate-200 rounded-lg p-4 bg-slate-50/50">
-                <span className="font-bold text-xs text-slate-900 block mb-1">Costura Reforçada</span>
-                <p className="text-xs text-slate-600">
-                  Acabamento interlock nas cavas e gola para suportar o atrito da partida.
-                </p>
-              </div>
-
-              <div className="border border-slate-200 rounded-lg p-4 bg-slate-50/50">
-                <span className="font-bold text-xs text-slate-900 block mb-1">Padronização de Medidas</span>
-                <p className="text-xs text-slate-600">
-                  Grade milimétrica conferida peça a peça antes do despacho.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. Tabela de Medidas Oficial */}
-      <section id="tabela-medidas" className="py-16 sm:py-20 border-b border-slate-200 bg-slate-50/50">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-xl mb-8">
-            <div className="flex items-center gap-2 text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1.5">
-              <Ruler className="h-4 w-4" />
-              <span>Guia de Tamanhos</span>
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-950">
-              Tabela de medidas das camisas
-            </h2>
-            <p className="text-sm text-slate-600 mt-2">
-              Meça uma camisa confortável da costura abaixo da axila (largura) e do ombro à barra (altura).
-            </p>
-          </div>
-
-          {/* Seletor de Categoria de Tamanho */}
-          <div className="flex gap-2 mb-6">
-            {(["masculino", "feminino", "infantil"] as const).map((tipo) => (
-              <button
-                key={tipo}
-                onClick={() => setAbaMedidas(tipo)}
-                className={`px-4 py-2 text-xs font-semibold rounded-lg transition-colors capitalize ${
-                  abaMedidas === tipo
-                    ? "bg-slate-900 text-white"
-                    : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
-                }`}
-              >
-                {tipo === "feminino" ? "Feminino (Babylook)" : tipo}
-              </button>
-            ))}
-          </div>
-
-          {/* Tabela Limpa e Extremamente Legível no Mobile */}
-          <div className="border border-slate-200 rounded-lg bg-white overflow-hidden shadow-xs">
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 font-semibold uppercase text-[11px]">
-                    <th className="py-3 px-4">Tamanho</th>
-                    <th className="py-3 px-4">Largura (Tórax)</th>
-                    <th className="py-3 px-4">Altura (Comprimento)</th>
-                    <th className="py-3 px-4">Referência Indicada</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100">
-                  {medidas[abaMedidas].map((item) => (
-                    <tr key={item.tamanho} className="hover:bg-slate-50/60 transition-colors">
-                      <td className="py-3 px-4 font-bold text-slate-950 font-mono">
-                        {item.tamanho}
-                      </td>
-                      <td className="py-3 px-4 text-slate-700">{item.largura}</td>
-                      <td className="py-3 px-4 text-slate-700">{item.altura}</td>
-                      <td className="py-3 px-4 text-slate-500">{item.indicacao}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="p-3 bg-slate-50/50 border-t border-slate-200 text-[11px] text-slate-500">
-              * Variação técnica de tolerância de até 1,5 cm permitida no corte têxtil.
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 7. Consulta Direta de Rastreamento */}
-      <section className="py-16 sm:py-20 border-b border-slate-200 bg-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border border-slate-200 rounded-xl p-6 sm:p-10 bg-slate-50/30 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="max-w-md space-y-2 text-center md:text-left">
-              <h3 className="text-xl font-bold text-slate-950">
-                Já possui um pedido em andamento?
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                Insira o código fornecido pela confecção para verificar o status atual e a lista de atletas cadastrada.
-              </p>
-            </div>
-
-            <form onSubmit={handleBuscarRastreio} className="flex flex-col sm:flex-row gap-2 w-full md:w-auto">
-              <input
-                type="text"
-                value={codigoRastreio}
-                onChange={(e) => setCodigoRastreio(e.target.value)}
-                placeholder="Ex: HC-2603-0001"
-                className="px-4 py-2.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:border-slate-950 w-full sm:w-64 bg-white"
-              />
-              <button
-                type="submit"
-                className="px-5 py-2.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition shadow-xs shrink-0"
-              >
-                Consultar Pedido
-              </button>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      {/* 8. CTA Final de Fechamento */}
-      <section className="py-20 bg-slate-950 text-white">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight max-w-xl mx-auto">
-            Pronto para vestir o seu time com qualidade profissional?
-          </h2>
-          <p className="text-sm text-slate-400 max-w-lg mx-auto leading-relaxed">
-            Monte a sua lista de atletas agora mesmo e receba o orçamento detalhado para a confecção da sua equipe.
-          </p>
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Link
-              href="/pedido"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-sm font-bold transition"
-            >
-              <span>Fazer meu pedido</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/ajuda"
-              className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 text-sm font-semibold border border-slate-800 transition"
-            >
-              Tirar dúvidas
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 9. Footer Corporativo & Acesso Restrito */}
-      <footer className="bg-white border-t border-slate-200 py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pb-8 border-b border-slate-100">
-            {/* Coluna 1: Marca */}
-            <div className="space-y-2">
-              <span className="font-black text-base tracking-tight text-slate-950">
-                HEELCLOTH
+          {/* Faixa / Slideshow Horizontal Editorial de Imagens Verticais na Base */}
+          <div id="colecao" className="w-full mt-8 sm:mt-12 pt-4 border-t border-black/[0.04]">
+            <div className="flex items-center justify-between mb-3 px-1 text-xs text-[#606060] font-medium">
+              <span className="uppercase tracking-wider font-mono text-[11px] text-[#121212]/50">
+                Editorial da Coleção
               </span>
-              <p className="text-xs text-slate-500 max-w-xs leading-relaxed">
-                Confecção especializada em uniformes esportivos sob medida e fardamentos personalizados.
-              </p>
+              <span className="hidden sm:inline-block text-[11px] text-[#606060]/70 font-mono">
+                Arrraste ou navegue com as setas
+              </span>
             </div>
 
-            {/* Coluna 2: Navegação */}
-            <div className="space-y-2 text-xs">
-              <span className="font-bold text-slate-900 block">Links Úteis</span>
-              <ul className="space-y-1.5 text-slate-600">
-                <li>
-                  <Link href="/pedido" className="hover:text-slate-950 transition-colors">
-                    Fazer Pedido
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/rastreio" className="hover:text-slate-950 transition-colors">
-                    Acompanhar Pedido
-                  </Link>
-                </li>
-                <li>
-                  <a href="#tabela-medidas" className="hover:text-slate-950 transition-colors">
-                    Tabela de Medidas
-                  </a>
-                </li>
-                <li>
-                  <Link href="/ajuda" className="hover:text-slate-950 transition-colors">
-                    Perguntas Frequentes
-                  </Link>
-                </li>
-              </ul>
-            </div>
+            <EditorialSlideshow />
+          </div>
+        </main>
 
-            {/* Coluna 3: Atendimento */}
-            <div className="space-y-2 text-xs">
-              <span className="font-bold text-slate-900 block">Suporte</span>
-              <p className="text-slate-500 leading-relaxed">
-                Dúvidas sobre materiais ou personalização de camisas? Acesse nossa central de ajuda.
-              </p>
-              <Link
-                href="/ajuda"
-                className="inline-flex items-center gap-1 font-semibold text-blue-600 hover:underline"
-              >
-                <span>Central de Ajuda Heelcloth</span>
-                <ChevronRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
+        {/* ==================================================================== */}
+        {/* RODAPÉ EDITORIAL DISCRETO (SEM RUÍDO OPERACIONAL) */}
+        {/* ==================================================================== */}
+        <footer className="w-full px-5 sm:px-8 lg:px-12 py-5 border-t border-black/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#606060]">
+          <div className="flex items-center gap-3">
+            <span className="font-bold text-[#121212]">HEELCLOTH</span>
+            <span className="text-black/20">•</span>
+            <span>Edição Contemporânea</span>
           </div>
 
-          {/* Faixa Inferior com Acesso Discreto */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-            <p>© {new Date().getFullYear()} Heelcloth Sportswear. Todos os direitos reservados.</p>
-
-            {/* Acesso Administrativo Discreto */}
-            <div className="flex items-center gap-1.5 text-slate-400 hover:text-slate-700 transition-colors">
-              <Lock className="h-3 w-3" />
-              <Link href="/login" className="hover:underline">
-                Acesso do Colaborador
-              </Link>
-            </div>
+          <div className="flex items-center gap-6">
+            <a href="#colecao" className="hover:text-[#121212] transition-colors">
+              Coleção
+            </a>
+            <a href="#editorial" className="hover:text-[#121212] transition-colors">
+              Editorial
+            </a>
+            <Link href="/login" className="hover:text-[#121212] transition-colors">
+              Acesso
+            </Link>
           </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

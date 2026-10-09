@@ -1,6 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
+  /* Tokens do SaaS Heelcloth existente */
   --background: #f8fafc;
   --foreground: #0f172a;
   --card: #ffffff;
@@ -21,6 +23,20 @@
   --input: #e2e8f0;
   --ring: #2563eb;
   --radius: 0.5rem;
+
+  /* Tokens de Direção de Arte Editorial (Landing Page) */
+  --page-aqua-blue: #49AAB8;
+  --canvas: #FCFCFB;
+  --ink: #121212;
+  --editorial-muted: #606060;
+  --editorial-line: rgba(18, 18, 18, 0.14);
+  --editorial-accent: #49AAB8;
+  --editorial-accent-hover: #368D9C;
+  --inverse: #FFFFFF;
+}
+
+.font-editorial {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 * {
