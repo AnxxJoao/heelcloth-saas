@@ -16,6 +16,9 @@ import {
   ChevronRight,
   Layers,
   Info,
+  Upload,
+  FileCode,
+  CheckCircle2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
@@ -57,6 +60,11 @@ export default function CorelDrawPage() {
   const [copiadoMacro, setCopiadoMacro] = useState(false);
   const [mostrarModalMacro, setMostrarModalMacro] = useState(false);
   const [mostrarModalGuia, setMostrarModalGuia] = useState(false);
+  const [mostrarModalResultado, setMostrarModalResultado] = useState(false);
+  const [manifestoJson, setManifestoJson] = useState("");
+  const [importandoResultado, setImportandoResultado] = useState(false);
+  const [resultadoSucesso, setResultadoSucesso] = useState<string | null>(null);
+  const [resultadoErro, setResultadoErro] = useState<string | null>(null);
   const [macroCodigo, setMacroCodigo] = useState("");
   const [dadosTabulados, setDadosTabulados] = useState("");
 
@@ -119,6 +127,49 @@ export default function CorelDrawPage() {
   const baixarArquivoTxt = () => {
     if (!pedidoSelecionado) return;
     window.open(`/api/coreldraw/${pedidoSelecionado.id}/download`, "_blank");
+  };
+
+  const baixarJobJson = () => {
+    if (!pedidoSelecionado) return;
+    window.open(`/api/coreldraw/${pedidoSelecionado.id}/job?download=true`, "_blank");
+  };
+
+  const enviarManifestoResultado = async () => {
+    if (!pedidoSelecionado || !manifestoJson.trim()) return;
+    try {
+      setImportandoResultado(true);
+      setResultadoErro(null);
+      setResultadoSucesso(null);
+      let parsed;
+      try {
+        parsed = JSON.parse(manifestoJson);
+      } catch {
+        setResultadoErro("O conteúdo informado não é um JSON válido.");
+        return;
+      }
+
+      const res = await fetch(`/api/coreldraw/${pedidoSelecionado.id}/resultado`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(parsed),
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.sucesso) {
+        setResultadoErro(data.erro || "Falha ao processar o manifesto de resultado.");
+        return;
+      }
+
+      setResultadoSucesso(
+        `Manifesto processado com sucesso! Status: ${data.status.toUpperCase()}. Novos arquivos vinculados ao pedido: ${data.novosArquivosAnexados || 0}.`
+      );
+      setManifestoJson("");
+      carregarPedidos();
+    } catch (err: any) {
+      setResultadoErro(err.message || "Erro de rede ao enviar resultado.");
+    } finally {
+      setImportandoResultado(false);
+    }
   };
 
   const totalPecas = pedidos.reduce((acc, p) => acc + (p.totalJogadores || 0), 0);
@@ -302,13 +353,14 @@ export default function CorelDrawPage() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 w-full sm:w-auto">
+                <div className="flex items-center gap-2 flex-wrap w-full sm:w-auto">
                   <Button
                     variant="outline"
                     size="sm"
                     onClick={copiarDadosTabulados}
                     disabled={pedidoSelecionado.totalJogadores === 0}
                     className="gap-1.5 flex-1 sm:flex-initial justify-center"
+                    title="Copiar dados tabulados para o clipboard"
                   >
                     {copiadoDados ? (
                       <>
@@ -324,13 +376,42 @@ export default function CorelDrawPage() {
                   </Button>
 
                   <Button
+                    variant="outline"
                     size="sm"
                     onClick={baixarArquivoTxt}
                     disabled={pedidoSelecionado.totalJogadores === 0}
                     className="gap-1.5 flex-1 sm:flex-initial justify-center"
+                    title="Baixar lista tabulada legada em .txt"
                   >
                     <Download className="w-3.5 h-3.5" />
                     <span>Baixar .txt</span>
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={baixarJobJson}
+                    disabled={pedidoSelecionado.totalJogadores === 0}
+                    className="gap-1.5 flex-1 sm:flex-initial justify-center text-blue-700 border-blue-200 hover:bg-blue-50"
+                    title="Baixar snapshot estruturado do job em formato JSON para automação CorelDRAW VBA"
+                  >
+                    <FileCode className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Job JSON</span>
+                  </Button>
+
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setResultadoErro(null);
+                      setResultadoSucesso(null);
+                      setManifestoJson("");
+                      setMostrarModalResultado(true);
+                    }}
+                    className="gap-1.5 flex-1 sm:flex-initial justify-center bg-emerald-600 hover:bg-emerald-700 text-white"
+                    title="Importar manifesto de resultado emitido pelo CorelDRAW VBA"
+                  >
+                    <Upload className="w-3.5 h-3.5" />
+                    <span>Importar Resultado</span>
                   </Button>
                 </div>
               </div>
@@ -562,6 +643,98 @@ export default function CorelDrawPage() {
           <pre className="text-xs font-mono text-emerald-400 leading-relaxed whitespace-pre selection:bg-emerald-800">
             {macroCodigo || "Carregando código VBA..."}
           </pre>
+        </div>
+      </Modal>
+
+      {/* MODAL: Importar Resultado CorelDRAW */}
+      <Modal
+        isOpen={mostrarModalResultado}
+        onClose={() => setMostrarModalResultado(false)}
+        title="Importar Manifesto de Resultado (CorelDRAW VBA)"
+        description={
+          pedidoSelecionado
+            ? `Pedido: ${pedidoSelecionado.orderNumber} • ${pedidoSelecionado.customer.name}`
+            : ""
+        }
+        maxWidth="2xl"
+        footer={
+          <>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setMostrarModalResultado(false)}
+              disabled={importandoResultado}
+            >
+              Fechar
+            </Button>
+            <Button
+              size="sm"
+              onClick={enviarManifestoResultado}
+              disabled={importandoResultado || !manifestoJson.trim()}
+              className="gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white"
+            >
+              {importandoResultado ? (
+                <span>Processando...</span>
+              ) : (
+                <>
+                  <Upload className="w-4 h-4" />
+                  <span>Processar e Vincular Arquivos</span>
+                </>
+              )}
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <p className="text-xs text-slate-600">
+            Cole abaixo o conteúdo do arquivo <code>result.json</code> gerado pela macro do CorelDRAW (localizado em <code>C:\Heelcloth\Outputs\{pedidoSelecionado?.orderNumber}\result.json</code>) ou selecione o arquivo local:
+          </p>
+
+          <div>
+            <input
+              type="file"
+              accept=".json"
+              className="text-xs text-slate-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) {
+                  const reader = new FileReader();
+                  reader.onload = (event) => {
+                    const content = event.target?.result as string;
+                    if (content) setManifestoJson(content);
+                  };
+                  reader.readAsText(file);
+                }
+              }}
+            />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-700 mb-1">
+              JSON do Manifesto (result.json):
+            </label>
+            <textarea
+              rows={9}
+              className="w-full text-xs font-mono p-3 border border-slate-300 rounded-xl bg-slate-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder='{"jobId": "job_...", "status": "succeeded", "generatedFiles": [...]}'
+              value={manifestoJson}
+              onChange={(e) => setManifestoJson(e.target.value)}
+            />
+          </div>
+
+          {resultadoErro && (
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+              <span>{resultadoErro}</span>
+            </div>
+          )}
+
+          {resultadoSucesso && (
+            <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 flex items-start gap-2">
+              <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5 text-emerald-600" />
+              <span>{resultadoSucesso}</span>
+            </div>
+          )}
         </div>
       </Modal>
     </div>

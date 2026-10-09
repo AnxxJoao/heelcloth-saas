@@ -12,8 +12,8 @@ Pre-flight: clean, zero duplications, contracts aligned.
 
 Task 1: complete (8a169f4)
 Task 2: complete (a30cff7)
-Task 3: complete
-Task 4: complete
-Task 5: in_progress
-Task 6: pending
+Task 3: complete (011a3e9)
+Task 4: complete (011a3e9)
+Task 5: complete
+Task 6: in_progress
 Task 7: pending
