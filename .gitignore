@@ -36,3 +36,14 @@ next-env.d.ts
 # SQLite database
 *.db
 *.db-journal
+
+# AI agent harness & local skills
+.agent/
+.agents/
+.claude/
+.codex/
+.gemini/
+.grok/
+.hermes/
+.kiro/
+
