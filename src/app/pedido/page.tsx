@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import {
   Shirt,
@@ -202,8 +203,16 @@ export default function FazerPedidoPage() {
           {/* Logo da Marca */}
           <Link
             href="/"
-            className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] rounded-xs"
+            className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] rounded-xs"
           >
+            <Image
+              src="/logo.png"
+              alt="Logo Heelcloth"
+              width={24}
+              height={45}
+              className="h-7 w-auto object-contain transition-transform group-hover:scale-105"
+              priority
+            />
             <span className="text-lg sm:text-xl font-bold tracking-tight text-[#121212] transition-opacity group-hover:opacity-80">
               HEELCLOTH
             </span>

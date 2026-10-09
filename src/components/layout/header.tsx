@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Bell, Search, User, LogOut, Menu, Shirt } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useAdminShell } from "./admin-shell-context";
@@ -65,8 +66,14 @@ export function Header() {
         </button>
 
         <div className="lg:hidden flex items-center gap-2">
-          <div className="h-7 w-7 rounded-lg bg-blue-600 flex items-center justify-center text-white">
-            <Shirt className="h-4 w-4" />
+          <div className="h-7 w-7 rounded-lg bg-slate-50 border border-slate-200/90 flex items-center justify-center p-0.5 shadow-2xs">
+            <Image
+              src="/logo.png"
+              alt="Heelcloth"
+              width={16}
+              height={30}
+              className="h-5 w-auto object-contain"
+            />
           </div>
           <span className="font-bold text-sm text-slate-900 tracking-tight">Heelcloth</span>
         </div>

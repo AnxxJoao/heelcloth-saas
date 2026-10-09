@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowLeft,
   ChevronDown,
@@ -107,8 +108,18 @@ export default function AjudaPage() {
             >
               <ArrowLeft className="h-4 w-4" />
             </Link>
-            <Link href="/" className="font-black text-lg tracking-tight text-slate-950">
-              HEELCLOTH
+            <Link href="/" className="flex items-center gap-2 group">
+              <Image
+                src="/logo.png"
+                alt="Logo Heelcloth"
+                width={20}
+                height={38}
+                className="h-6 w-auto object-contain transition-transform group-hover:scale-105"
+                priority
+              />
+              <span className="font-black text-lg tracking-tight text-slate-950">
+                HEELCLOTH
+              </span>
             </Link>
           </div>
 

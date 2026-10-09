@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { Shirt, Lock, Mail, ArrowRight, ShieldCheck, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -52,8 +53,15 @@ export default function LoginPage() {
       <div className="w-full max-w-md space-y-6">
         {/* Brand Header */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-12 w-12 rounded-xl bg-blue-600 items-center justify-center text-white shadow-md">
-            <Shirt className="h-6 w-6" />
+          <div className="inline-flex h-14 w-14 rounded-2xl bg-white border border-slate-200 items-center justify-center shadow-xs p-1.5">
+            <Image
+              src="/logo.png"
+              alt="Logo Heelcloth"
+              width={32}
+              height={60}
+              className="h-10 w-auto object-contain"
+              priority
+            />
           </div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Heelcloth SaaS</h1>
           <p className="text-sm text-slate-500">

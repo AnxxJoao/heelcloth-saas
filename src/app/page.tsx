@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { EditorialSlideshow } from "@/components/EditorialSlideshow";
 
@@ -45,8 +46,16 @@ export default function HomePage() {
           {/* Logo da Marca */}
           <Link
             href="/"
-            className="flex items-center gap-2 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] rounded-xs"
+            className="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#49AAB8] rounded-xs"
           >
+            <Image
+              src="/logo.png"
+              alt="Logo Heelcloth"
+              width={24}
+              height={45}
+              className="h-7 w-auto object-contain transition-transform group-hover:scale-105"
+              priority
+            />
             <span className="text-lg sm:text-xl font-bold tracking-tight text-[#121212] transition-opacity group-hover:opacity-80">
               HEELCLOTH
             </span>
@@ -323,7 +332,14 @@ export default function HomePage() {
       {/* ==================================================================== */}
       <footer className="w-full border-t border-black/[0.06] bg-white">
         <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#606060]">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
+            <Image
+              src="/logo.png"
+              alt="Logo Heelcloth"
+              width={16}
+              height={30}
+              className="h-5 w-auto object-contain"
+            />
             <span className="font-bold text-[#121212]">HEELCLOTH</span>
             <span className="text-black/20">•</span>
             <span>Uniformes Esportivos Sob Medida</span>

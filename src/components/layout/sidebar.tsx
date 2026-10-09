@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
@@ -205,8 +206,14 @@ export function Sidebar() {
           {/* Header Mobile Brand */}
           <div className="h-16 flex items-center justify-between px-5 border-b border-slate-100">
             <div className="flex items-center gap-3">
-              <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs">
-                <Shirt className="h-5 w-5" />
+              <div className="h-9 w-9 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center shadow-2xs p-1">
+                <Image
+                  src="/logo.png"
+                  alt="Heelcloth"
+                  width={20}
+                  height={38}
+                  className="h-6 w-auto object-contain"
+                />
               </div>
               <div>
                 <span className="font-bold text-base text-slate-900 tracking-tight block leading-tight">
@@ -254,8 +261,14 @@ export function Sidebar() {
             isCollapsed && "justify-center px-0"
           )}
         >
-          <div className="h-9 w-9 rounded-xl bg-blue-600 flex items-center justify-center text-white shadow-xs shrink-0">
-            <Shirt className="h-5 w-5" />
+          <div className="h-9 w-9 rounded-xl bg-slate-50 border border-slate-200/90 flex items-center justify-center shadow-2xs shrink-0 p-1">
+            <Image
+              src="/logo.png"
+              alt="Heelcloth"
+              width={20}
+              height={38}
+              className="h-6 w-auto object-contain"
+            />
           </div>
           {!isCollapsed && (
             <div className="min-w-0 flex-1">
