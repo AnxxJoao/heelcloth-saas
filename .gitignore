@@ -47,3 +47,7 @@ next-env.d.ts
 .hermes/
 .kiro/
 
+# local env files
+.env
+.env.*
+!.env.example
